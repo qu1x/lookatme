@@ -41,9 +41,9 @@ server {
 
 With following DNS records:
 
-  * <ipvx.qu1x.net>: A and AAAA
-  * <ipv4.qu1x.net>: A only
-  * <ipv6.qu1x.net>: AAAA only
+  * [ipvx.qu1x.net](http://ipvx.qu1x.net): A and AAAA
+  * [ipv4.qu1x.net](http://ipv4.qu1x.net): A only
+  * [ipv6.qu1x.net](http://ipv6.qu1x.net): AAAA only
 
 Last two are supposed to be entered in a web browser.
 
