@@ -1,0 +1,49 @@
+#! /bin/sh
+#
+# Copyright (c) 2017 Rouven Spreckels <n3vu0r@qu1x.org>
+#
+# Usage of the works is permitted provided that
+# this instrument is retained with the works, so that
+# any entity that uses the works is notified of this instrument.
+#
+# DISCLAIMER: THE WORKS ARE WITHOUT WARRANTY.
+
+over=${LOOKATME_OVER:-"http"}
+from=${LOOKATME_FROM:-"ipvx.qu1x.net"}
+
+look() { curl -sS$1 "$over://$from"; }
+hint() { 1>&2 echo "Invalid usage, see --help"; exit 1; }
+
+test $# -le 1 || hint
+case $1 in
+	'')
+		look 4 & pid4=$!
+		look 6 & pid6=$!
+		wait $pid4; ret4=$?
+		wait $pid6; ret6=$?
+		exit $(($ret4+$ret6)) ;;
+	-4)
+		look 4 ;;
+	-6)
+		look 6 ;;
+	-h|--help)
+		echo "Look at me and tell me my IPv4 and IPv6 address"
+		echo
+		echo "lookatme [OPTION]"
+		echo "  ...via IPv4 and IPv6 in parallel (output unordered)"
+		echo
+		echo "OPTIONs:"
+		echo "  -4             Via IPv4 only"
+		echo "  -6             Via IPv6 only"
+		echo "  -h, --help     Print help"
+		echo "  -v, --version  Print version"
+		echo
+		echo "Environment variables:"
+		echo "  LOOKATME_OVER  $over"
+		echo "  LOOKATME_FROM  $from"
+		;;
+	-v|--version)
+		echo "v1.0.0 <https://qu1x.org/lookatme>" ;;
+	*)
+		hint ;;
+esac
