@@ -5,7 +5,7 @@ be as fast as possible. Requires `curl`.
 
 ## Usage
 
-```sh
+```text
 $ lookatme --help
 Look at me and tell me my IPv4 and IPv6 address
 
