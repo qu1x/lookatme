@@ -40,8 +40,7 @@ case $1 in
 		echo
 		echo "Environment variables:"
 		echo "  LOOKATME_OVER  $over"
-		echo "  LOOKATME_FROM  $from"
-		;;
+		echo "  LOOKATME_FROM  $from" ;;
 	-v|--version)
 		echo "v1.0.0 <https://qu1x.org/lookatme>" ;;
 	*)
