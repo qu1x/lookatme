@@ -31,7 +31,9 @@ An `nginx` server block could be:
 server {
         listen 80;
         listen [::]:80;
+
         server_name ipvx.qu1x.net ipv4.qu1x.net ipv6.qu1x.net;
+
         default_type text/plain;
         return 200 "$remote_addr\n";
 }
