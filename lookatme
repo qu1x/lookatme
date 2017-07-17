@@ -11,9 +11,7 @@
 over=${LOOKATME_OVER:-"http"}
 from=${LOOKATME_FROM:-"ipvx.qu1x.net"}
 
-look() {
-	curl --silent --show-error --ipv$1 "$over://$from"
-}
+look() { curl --silent --show-error --ipv$1 "$over://$from"; }
 
 help="\
 Look at me and tell me my IPv4 and IPv6 address
@@ -35,21 +33,21 @@ v1.0.0 <https://qu1x.org/lookatme>"
 hint="\
 Invalid usage, see --help"
 
-test $# -le 1 || hint
+[ $# -le 1 ] || hint
 case $1 in
 	'')
-		tmp4=$(mktemp -u)
-		tmp6=$(mktemp -u)
-		trap 'rm -f "$tmp4" "$tmp6"' EXIT INT TERM HUP
-		mkfifo -m 600 "$tmp4" "$tmp6"
-		look 4 > "$tmp4" 2>&1 & pid4=$!
-		look 6 > "$tmp6" 2>&1 & pid6=$!
-		ipv4=$(cat "$tmp4")
-		ipv6=$(cat "$tmp6")
+		path=$(mktemp --tmpdir=/dev/shm --directory)
+		ipv4="$path/ipv4"
+		ipv6="$path/ipv6"
+		trap 'rm -r "$path"' EXIT INT TERM HUP
+		look 4 > "$ipv4" 2>&1 & pid4=$!
+		look 6 > "$ipv6" 2>&1 & pid6=$!
 		wait $pid4; ret4=$?
 		wait $pid6; ret6=$?
-		test $ret4 -eq 0 && echo "$ipv4" || echo "$ipv4" 1>&2
-		test $ret6 -eq 0 && echo "$ipv6" || echo "$ipv6" 1>&2
+		[ $ret4 -eq 0 -a $ret6 -eq 0 ] && cat "$ipv4" "$ipv6"
+		[ $ret4 -ne 0 -a $ret6 -ne 0 ] && cat "$ipv4" "$ipv6" 1>&2
+		[ $ret4 -eq 0 -a $ret6 -ne 0 ] && { cat "$ipv4"; cat "$ipv6" 1>&2; }
+		[ $ret4 -ne 0 -a $ret6 -eq 0 ] && { cat "$ipv4" 1>&2; cat "$ipv6"; }
 		exit $(($ret4+$ret6)) ;;
 	-4)
 		look 4 ;;
