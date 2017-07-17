@@ -1,7 +1,7 @@
 # lookatme
 
-Single file shell script reporting external IPv4 and IPv6 address in parallel to
-be as fast as possible. Requires `curl`.
+Single file `curl` based shell script reporting external IPv4 and IPv6 address
+in parallel to be as fast as possible.
 
 ## Usage
 
@@ -31,9 +31,7 @@ An `nginx` server block could be:
 server {
         listen 80;
         listen [::]:80;
-
         server_name ipvx.qu1x.net ipv4.qu1x.net ipv6.qu1x.net;
-
         default_type text/plain;
         return 200 "$remote_addr\n";
 }
@@ -41,11 +39,9 @@ server {
 
 With following DNS records:
 
-  * [ipvx.qu1x.net](http://ipvx.qu1x.net): A and AAAA
-  * [ipv4.qu1x.net](http://ipv4.qu1x.net): A only
-  * [ipv6.qu1x.net](http://ipv6.qu1x.net): AAAA only
-
-Last two are supposed to be entered in a web browser.
+  * [ipvx.qu1x.net](http://ipvx.qu1x.net): A and AAAA for `lookatme`.
+  * [ipv4.qu1x.net](http://ipv4.qu1x.net): A only for IPv4 with web browser.
+  * [ipv6.qu1x.net](http://ipv6.qu1x.net): AAAA only for IPv6 with web browser.
 
 ## License
 
