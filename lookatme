@@ -11,8 +11,29 @@
 over=${LOOKATME_OVER:-"http"}
 from=${LOOKATME_FROM:-"ipvx.qu1x.net"}
 
-look() { curl -sS$1 "$over://$from"; }
-hint() { 1>&2 echo "Invalid usage, see --help"; exit 1; }
+look() {
+	curl --silent --show-error --ipv$1 "$over://$from"
+}
+
+help="\
+Look at me and tell me my IPv4 and IPv6 address
+
+lookatme [OPTION]
+  ...via IPv4 and IPv6 in parallel (output unordered)
+
+OPTIONs:
+  -4             Via IPv4 only
+  -6             Via IPv6 only
+  -h, --help     Print help
+  -v, --version  Print version
+
+Environment variables:
+  LOOKATME_OVER  $over
+  LOOKATME_FROM  $from"
+info="\
+v1.0.0 <https://qu1x.org/lookatme>"
+hint="\
+Invalid usage, see --help"
 
 test $# -le 1 || hint
 case $1 in
@@ -27,22 +48,9 @@ case $1 in
 	-6)
 		look 6 ;;
 	-h|--help)
-		echo "Look at me and tell me my IPv4 and IPv6 address"
-		echo
-		echo "lookatme [OPTION]"
-		echo "  ...via IPv4 and IPv6 in parallel (output unordered)"
-		echo
-		echo "OPTIONs:"
-		echo "  -4             Via IPv4 only"
-		echo "  -6             Via IPv6 only"
-		echo "  -h, --help     Print help"
-		echo "  -v, --version  Print version"
-		echo
-		echo "Environment variables:"
-		echo "  LOOKATME_OVER  $over"
-		echo "  LOOKATME_FROM  $from" ;;
+		echo "$help" ;;
 	-v|--version)
-		echo "v1.0.0 <https://qu1x.org/lookatme>" ;;
+		echo "$info" ;;
 	*)
-		hint ;;
+		echo "$hint" 1>&2; exit 2 ;;
 esac
