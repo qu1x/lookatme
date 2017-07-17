@@ -10,7 +10,7 @@ $ lookatme --help
 Look at me and tell me my IPv4 and IPv6 address
 
 lookatme [OPTION]
-  ...via IPv4 and IPv6 in parallel (output unordered)
+  ...via IPv4 and IPv6 in parallel while printing IPv4 before IPv6.
 
 OPTIONs:
   -4             Via IPv4 only
