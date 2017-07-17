@@ -19,7 +19,7 @@ help="\
 Look at me and tell me my IPv4 and IPv6 address
 
 lookatme [OPTION]
-  ...via IPv4 and IPv6 in parallel (output unordered)
+  ...via IPv4 and IPv6 in parallel while printing IPv4 before IPv6.
 
 OPTIONs:
   -4             Via IPv4 only
@@ -38,10 +38,18 @@ Invalid usage, see --help"
 test $# -le 1 || hint
 case $1 in
 	'')
-		look 4 & pid4=$!
-		look 6 & pid6=$!
+		tmp4=$(mktemp -u)
+		tmp6=$(mktemp -u)
+		trap 'rm -f "$tmp4" "$tmp6"' EXIT INT TERM HUP
+		mkfifo -m 600 "$tmp4" "$tmp6"
+		look 4 > "$tmp4" 2>&1 & pid4=$!
+		look 6 > "$tmp6" 2>&1 & pid6=$!
+		ipv4=$(cat "$tmp4")
+		ipv6=$(cat "$tmp6")
 		wait $pid4; ret4=$?
 		wait $pid6; ret6=$?
+		test $ret4 -eq 0 && echo "$ipv4" || echo "$ipv4" 1>&2
+		test $ret6 -eq 0 && echo "$ipv6" || echo "$ipv6" 1>&2
 		exit $(($ret4+$ret6)) ;;
 	-4)
 		look 4 ;;
