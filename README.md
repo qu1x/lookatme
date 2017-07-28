@@ -7,25 +7,41 @@ in parallel to be as fast as possible.
 
 ```text
 $ lookatme --help
-Look at me and tell me my IPv4 and IPv6 address
+Look at me and tell me my IPv6 and IPv4 address.
 
 lookatme [OPTION]
-  ...via IPv4 and IPv6 in parallel while printing IPv4 before IPv6.
+  ... via IPv6 and IPv4 in parallel while printing IPv6 before IPv4. Parallized
+  only if /dev/shm and mktemp are available. Errors are silently ignored.
+  Scripts may cover all four possible cases with:
+
+  ipvx=$(lookatme) # Either IPv6\nIPv4\n, IPv6\n, IPv4\n, or empty.
+  ipv6=$(echo "$ipvx" | grep -F :) # IPv6 or empty.
+  ipv4=$(echo "$ipvx" | grep -F .) # IPv4 or empty.
+
+  Security? ... make sure that:
+
+  LOOKATME_OVER=https
+  LOOKATME_FROM=<trustful-host>
+  LOOKATME_DUDE=<trustful-ca-cert>
 
 OPTIONs:
-  -4             Via IPv4 only
-  -6             Via IPv6 only
-  -h, --help     Print help
-  -v, --version  Print version
+  -6, --ipv6     ... via IPv6 only.
+  -4, --ipv4     ... via IPv4 only.
+
+  -h, --help     Print help.
+  -v, --version  Print version.
 
 Environment variables:
   LOOKATME_OVER  http
   LOOKATME_FROM  ipvx.qu1x.net
+  LOOKATME_DUDE  [CA_CERT]
+  LOOKATME_HERE  [INTERFACE]
+  LOOKATME_FAST  2
 ```
 
 ## Server
 
-An `nginx` server block could be:
+An `nginx` server block may be:
 
 ```nginx
 server {
