@@ -1,6 +1,6 @@
 # lookatme
 
-Single file `curl` based shell script reporting external IPv4 and IPv6 address
+Single file `curl` based shell script reporting external IPv6 and IPv4 address
 in parallel to be as fast as possible.
 
 ## Usage
@@ -33,7 +33,7 @@ OPTIONs:
 
 Environment variables:
   LOOKATME_OVER  http
-  LOOKATME_FROM  ipvx.qu1x.net
+  LOOKATME_FROM  ipvx.qu1x.org
   LOOKATME_DUDE  [CA_CERT]
   LOOKATME_HERE  [INTERFACE]
   LOOKATME_FAST  2
@@ -45,23 +45,23 @@ An `nginx` server block may be:
 
 ```nginx
 server {
-        listen 80;
-        listen [::]:80;
-        server_name ipvx.qu1x.net ipv4.qu1x.net ipv6.qu1x.net;
-        default_type text/plain;
-        return 200 "$remote_addr\n";
+	listen 80;
+	listen [::]:80;
+	server_name ipvx.qu1x.org ipv6.qu1x.org ipv4.qu1x.org;
+	default_type text/plain;
+	return 200 "$remote_addr\n";
 }
 ```
 
 With following DNS records:
 
-  * [ipvx.qu1x.net](http://ipvx.qu1x.net): A and AAAA for `lookatme`.
-  * [ipv4.qu1x.net](http://ipv4.qu1x.net): A only for IPv4 with web browser.
-  * [ipv6.qu1x.net](http://ipv6.qu1x.net): AAAA only for IPv6 with web browser.
+  * [ipvx.qu1x.org](https://ipvx.qu1x.org): A and AAAA for `lookatme`.
+  * [ipv6.qu1x.org](https://ipv6.qu1x.org): AAAA only for IPv6 with web browser.
+  * [ipv4.qu1x.org](https://ipv4.qu1x.org): A only for IPv4 with web browser.
 
 ## License
 
-Copyright (c) 2017 Rouven Spreckels <n3vu0r@qu1x.org>
+Copyright (c) 2017, 2019 Rouven Spreckels <n3vu0r@qu1x.org>
 
 Usage of the works is permitted provided that
 this instrument is retained with the works, so that

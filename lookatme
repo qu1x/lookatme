@@ -1,8 +1,8 @@
 #! /bin/sh
 #
-# Look at me and tell me my IPv4 and IPv6 address, see `lookatme --help'.
+# Look at me and tell me my IPv6 and IPv4 address, see `lookatme --help'.
 
-# Copyright (c) 2017 Rouven Spreckels <n3vu0r@qu1x.org>
+# Copyright (c) 2017, 2019 Rouven Spreckels <n3vu0r@qu1x.org>
 #
 # Usage of the works is permitted provided that
 # this instrument is retained with the works, so that
@@ -11,14 +11,14 @@
 # DISCLAIMER: THE WORKS ARE WITHOUT WARRANTY.
 
 over=${LOOKATME_OVER:-"http"}
-from=${LOOKATME_FROM:-"ipvx.qu1x.net"}
+from=${LOOKATME_FROM:-"ipvx.qu1x.org"}
 dude=${LOOKATME_DUDE:-}
 here=${LOOKATME_HERE:-}
 fast=${LOOKATME_FAST:-"2"}
 
 look() {
 	curl ${dude:+--cacert "$dude"} ${here:+--interface "$here"} -m "$fast" \
-		-sf$1 "$over://$from" | grep '^\[*[0-9a-fA-F.:]\+]*$'
+		-sfL$1 "$over://$from" | grep '^\[*[0-9a-fA-F.:]\+]*$'
 }
 
 help="\
